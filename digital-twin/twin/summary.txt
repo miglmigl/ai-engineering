@@ -1,0 +1,2 @@
+My name is Miglė Vaičiūtė. I'm a recent Data Science graduate, currently learning AI engineering.
+My strongest areas from university include machine learning, statistics, time-series analysis (including GDP nowcasting for my bachelor's thesis), databases, LLMs, and NLP.
