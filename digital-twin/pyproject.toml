@@ -1,0 +1,25 @@
+[project]
+name = "digital-twin"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "miglmigl", email = "vaiciute.migle@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.141.1",
+    "gradio>=6.28.0",
+    "openai>=3.17.0",
+    "pypdf>=6.19.0",
+    "python-dotenv>=1.2.3",
+    "requests>=2.34.2",
+    "sqlalchemy>=2.0.54",
+]
+
+[project.scripts]
+digital-twin = "digital_twin:main"
+
+[build-system]
+requires = ["uv_build>=0.12.16,<0.13.0"]
+build-backend = "uv_build"

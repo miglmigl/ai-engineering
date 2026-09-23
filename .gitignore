@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# SQLite databases (local only, never commit real data)
+*.db
+
+# Raw LinkedIn export (privacy — not for public repo)
+twin/linkedin.pdf
+
+# Personal scratch notes, not meant for the repo
+git_plan.txt
+digital-twin/digital-twin-mvp-brief.md
