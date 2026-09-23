@@ -220,9 +220,12 @@ __marimo__/
 # SQLite databases (local only, never commit real data)
 *.db
 
-# Raw LinkedIn export (privacy — not for public repo)
-twin/linkedin.pdf
+# Raw personal document exports (privacy — not for public repo)
+digital-twin/twin/linkedin.pdf
+digital-twin/twin/cv_digital_twin.pdf
 
 # Personal scratch notes, not meant for the repo
 git_plan.txt
 digital-twin/digital-twin-mvp-brief.md
+digital-twin/digital-twin-road-map.md
+digital-twin/digital-twin-implementation-plan.md
