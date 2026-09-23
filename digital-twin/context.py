@@ -1,6 +1,6 @@
 from pypdf import PdfReader
 
-reader = PdfReader("twin/linkedin.pdf")
+reader = PdfReader("twin/cv_digital_twin.pdf")
 linkedin = ""
 for page in reader.pages:
     text = page.extract_text()
