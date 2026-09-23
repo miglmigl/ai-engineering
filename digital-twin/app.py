@@ -4,12 +4,15 @@ import gradio as gr
 
 from context import system_prompt
 from tools import tools, handle_tool_calls
+from db import create_tables, log_conversation
 
 load_dotenv(override=True)
 openai = OpenAI()
 
 
-def chat(message, history):
+def chat(message, history, request: gr.Request):
+    user_message = message
+    session_id = request.session_hash
     messages = [{"role": "system", "content": system_prompt}] + history + [{"role": "user", "content": message}]
     response = openai.chat.completions.create(model="gpt-5.4-mini", messages=messages, tools=tools)
     while response.choices[0].finish_reason == "tool_calls":
@@ -19,8 +22,12 @@ def chat(message, history):
         messages.append(message)
         messages.extend(results)
         response = openai.chat.completions.create(model="gpt-5.4-mini", messages=messages, tools=tools)
-    return response.choices[0].message.content
+    final_reply = response.choices[0].message.content
+    log_conversation(session_id, user_message, final_reply)
+    return final_reply
 
 
 if __name__ == "__main__":
+    create_tables()
     gr.ChatInterface(chat).launch(inbrowser=True)
+
