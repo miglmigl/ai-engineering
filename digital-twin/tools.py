@@ -6,7 +6,16 @@ from db import Lead, UnknownQuestion, engine
 from notifier import notify
 
 
-def record_user_details(email, name="Name not provided", notes="not provided"):
+MAX_LEADS_PER_SESSION = 3
+_lead_counts: dict[str, int] = {}
+
+
+def record_user_details(email, name="Name not provided", notes="not provided", session_id=None):
+    count = _lead_counts.get(session_id, 0) + 1
+    if count > MAX_LEADS_PER_SESSION:
+        return "Already recorded contact details for this conversation — no need to submit more."
+    _lead_counts[session_id] = count
+
     with Session(engine) as session:
         session.add(Lead(email=email, name=name, notes=notes))
         session.commit()
@@ -14,7 +23,7 @@ def record_user_details(email, name="Name not provided", notes="not provided"):
     return "OK"
 
 
-def record_unknown_question(question):
+def record_unknown_question(question, session_id=None):
     with Session(engine) as session:
         session.add(UnknownQuestion(question=question))
         session.commit()
@@ -54,13 +63,13 @@ tools = [{"type": "function", "function": record_user_details_json},
          {"type": "function", "function": record_unknown_question_json}]
 
 
-def handle_tool_calls(tool_calls):
+def handle_tool_calls(tool_calls, session_id):
     results = []
     for tool_call in tool_calls:
         tool_name = tool_call.function.name
         arguments = json.loads(tool_call.function.arguments)
         print(f"Tool called: {tool_name}", flush=True)
         tool = globals().get(tool_name)
-        result = tool(**arguments) if tool else "No tool found"
+        result = tool(**arguments, session_id=session_id) if tool else "No tool found"
         results.append({"role": "tool", "content": json.dumps(result), "tool_call_id": tool_call.id})
     return results
